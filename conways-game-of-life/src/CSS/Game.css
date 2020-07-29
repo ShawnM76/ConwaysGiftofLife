@@ -10,3 +10,12 @@
   background: #ccc;
   position: absolute;
 }
+
+.buttons {
+  margin-top: 5%;
+  width: 100%;
+}
+
+.Input {
+  margin-right: 20%;
+}

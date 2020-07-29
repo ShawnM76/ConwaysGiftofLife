@@ -30,7 +30,7 @@ class Game extends React.Component {
     this.board = this.makeEmptyBoard();
   }
 
-  state = { cells: [], isRunning: false, interval: 100 };
+  state = { cells: [], isRunning: false, interval: 100, isOpen: false };
 
   makeEmptyBoard() {
     let board = [];
@@ -170,7 +170,39 @@ class Game extends React.Component {
   render() {
     const { cells } = this.state;
     return (
-      <div>
+      <section>
+        <h1>Conway's Game of Life!</h1>
+        <h2>Rules:</h2>
+        <p>
+          The universe of the Game of Life is an infinite, two-dimensional
+          orthogonal grid of square cells, each of which is in one of two
+          possible states, live or dead, (or populated and unpopulated,
+          respectively). Every cell interacts with its eight neighbours, which
+          are the cells that are horizontally, vertically, or diagonally
+          adjacent. At each step in time, the following transitions occur:
+        </p>
+        <li>
+          Any live cell with fewer than two live neighbours dies, as if by
+          underpopulation.
+        </li>
+        <li>
+          Any live cell with two or three live neighbours lives on to the next
+          generation.
+        </li>
+        <li>
+          Any live cell with more than three live neighbours dies, as if by
+          overpopulation.
+        </li>
+        <li>
+          Any dead cell with exactly three live neighbours becomes a live cell,
+          as if by reproduction.
+        </li>
+        <link
+          rel='stylesheet'
+          href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css'
+          integrity='sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk'
+          crossorigin='anonymous'></link>
+
         <div
           className='Board'
           style={{
@@ -186,30 +218,45 @@ class Game extends React.Component {
             <Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`} />
           ))}
         </div>
-        <div className='controls'>
-          Update every{' '}
-          <input
-            value={this.state.interval}
-            onChange={this.handleIntervalChange}
-          />{' '}
-          msec
-          {this.state.isRunning ? (
-            <button className='button' onClick={() => this.stopGame()}>
-              Stop
+        <div class='btn-group' role='group' aria-label='Basic example'>
+          <div class='Input'>
+            Enter millisecond{' '}
+            <input
+              value={this.state.interval}
+              onChange={this.handleIntervalChange}
+            />{' '}
+          </div>
+          <div class='buttons'>
+            {this.state.isRunning ? (
+              <button
+                type='button'
+                class='btn btn-secondary'
+                onClick={() => this.stopGame()}>
+                Stop
+              </button>
+            ) : (
+              <button
+                type='button'
+                class='btn btn-secondary'
+                onClick={() => this.runGame()}>
+                Run
+              </button>
+            )}
+            <button
+              type='button'
+              class='btn btn-secondary'
+              onClick={this.handleRandom}>
+              Random
             </button>
-          ) : (
-            <button className='button' onClick={() => this.runGame()}>
-              Run
+            <button
+              type='button'
+              class='btn btn-secondary'
+              onClick={this.handleClear}>
+              Clear
             </button>
-          )}
-          <button className='button' onClick={this.handleRandom}>
-            Random
-          </button>
-          <button className='button' onClick={this.handleClear}>
-            Clear
-          </button>
+          </div>
         </div>
-      </div>
+      </section>
     );
   }
 }
