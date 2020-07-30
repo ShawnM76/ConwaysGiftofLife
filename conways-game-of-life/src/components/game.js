@@ -30,7 +30,13 @@ class Game extends React.Component {
     this.board = this.makeEmptyBoard();
   }
 
-  state = { cells: [], isRunning: false, interval: 100, isOpen: false };
+  state = {
+    cells: [],
+    isRunning: false,
+    interval: 100,
+    isOpen: false,
+    isShowing: false,
+  };
 
   makeEmptyBoard() {
     let board = [];
@@ -88,6 +94,14 @@ class Game extends React.Component {
       window.clearTimeout(this.timeoutHandler);
       this.timeoutHandler = null;
     }
+  }
+
+  contentOpen() {
+    this.setState({ isShowing: true });
+  }
+
+  contentClose() {
+    this.setState({ isShowing: false });
   }
 
   runIteration() {
@@ -171,89 +185,116 @@ class Game extends React.Component {
     const { cells } = this.state;
     return (
       <section>
-        <h1>Conway's Game of Life!</h1>
-        <h2>Rules:</h2>
-        <p>
-          The universe of the Game of Life is an infinite, two-dimensional
-          orthogonal grid of square cells, each of which is in one of two
-          possible states, live or dead, (or populated and unpopulated,
-          respectively). Every cell interacts with its eight neighbours, which
-          are the cells that are horizontally, vertically, or diagonally
-          adjacent. At each step in time, the following transitions occur:
-        </p>
-        <li>
-          Any live cell with fewer than two live neighbours dies, as if by
-          underpopulation.
-        </li>
-        <li>
-          Any live cell with two or three live neighbours lives on to the next
-          generation.
-        </li>
-        <li>
-          Any live cell with more than three live neighbours dies, as if by
-          overpopulation.
-        </li>
-        <li>
-          Any dead cell with exactly three live neighbours becomes a live cell,
-          as if by reproduction.
-        </li>
         <link
           rel='stylesheet'
           href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css'
           integrity='sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk'
           crossorigin='anonymous'></link>
-
-        <div
-          className='Board'
-          style={{
-            width: WIDTH,
-            height: HEIGHT,
-            backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`,
-          }}
-          onClick={(event) => this.handleClick(event)}
-          ref={(n) => {
-            this.boardRef = n;
-          }}>
-          {cells.map((cell) => (
-            <Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`} />
-          ))}
-        </div>
-        <div class='btn-group' role='group' aria-label='Basic example'>
-          <div class='Input'>
-            Enter millisecond{' '}
-            <input
-              value={this.state.interval}
-              onChange={this.handleIntervalChange}
-            />{' '}
-          </div>
-          <div class='buttons'>
-            {this.state.isRunning ? (
-              <button
-                type='button'
-                class='btn btn-secondary'
-                onClick={() => this.stopGame()}>
-                Stop
-              </button>
+        <div class='rules'>
+          <h1>Conway's Game of Life!</h1>
+          <div class='btn-group'>
+            {this.state.isShowing ? (
+              <div>
+                <button
+                  class='btn btn-danger dropdown-toggle'
+                  data-toggle='dropdown'
+                  onClick={() => this.contentClose()}>
+                  Close
+                </button>
+                <h2>Rules:</h2>
+                <p>
+                  The universe of the Game of Life is an infinite,
+                  two-dimensional orthogonal grid of square cells, each of which
+                  is in one of two possible states, live or dead, (or populated
+                  and unpopulated, respectively). Every cell interacts with its
+                  eight neighbours, which are the cells that are horizontally,
+                  vertically, or diagonally adjacent. At each step in time, the
+                  following transitions occur:
+                </p>
+                <li>
+                  Any live cell with fewer than two live neighbours dies, as if
+                  by underpopulation.
+                </li>
+                <li>
+                  Any live cell with two or three live neighbours lives on to
+                  the next generation.
+                </li>
+                <li>
+                  Any live cell with more than three live neighbours dies, as if
+                  by overpopulation.
+                </li>
+                <li>
+                  Any dead cell with exactly three live neighbours becomes a
+                  live cell, as if by reproduction.
+                </li>
+              </div>
             ) : (
               <button
-                type='button'
-                class='btn btn-secondary'
-                onClick={() => this.runGame()}>
-                Run
+                class='btn btn-danger dropdown-toggle'
+                data-toggle='dropdown'
+                onClick={() => this.contentOpen()}>
+                Rules
               </button>
             )}
-            <button
-              type='button'
-              class='btn btn-secondary'
-              onClick={this.handleRandom}>
-              Random
-            </button>
-            <button
-              type='button'
-              class='btn btn-secondary'
-              onClick={this.handleClear}>
-              Clear
-            </button>
+          </div>
+        </div>
+        <div class='game'>
+          <div
+            className='Board'
+            style={{
+              width: WIDTH,
+              height: HEIGHT,
+              backgroundSize: `${CELL_SIZE}px ${CELL_SIZE}px`,
+            }}
+            onClick={(event) => this.handleClick(event)}
+            ref={(n) => {
+              this.boardRef = n;
+            }}>
+            {cells.map((cell) => (
+              <Cell x={cell.x} y={cell.y} key={`${cell.x},${cell.y}`} />
+            ))}
+          </div>
+          <div
+            class='btn-group'
+            className='bottom-buttons'
+            role='group'
+            aria-label='Basic example'>
+            <div class='buttons'>
+              {this.state.isRunning ? (
+                <button
+                  type='button'
+                  class='btn btn-secondary'
+                  onClick={() => this.stopGame()}>
+                  Stop
+                </button>
+              ) : (
+                <button
+                  type='button'
+                  class='btn btn-secondary'
+                  onClick={() => this.runGame()}>
+                  Run
+                </button>
+              )}
+              <button
+                type='button'
+                class='btn btn-secondary'
+                onClick={this.handleRandom}>
+                Random
+              </button>
+              <button
+                type='button'
+                class='btn btn-secondary'
+                onClick={this.handleClear}>
+                Clear
+              </button>
+              <div class='Input'>
+                Enter millisecond{' '}
+                <input
+                  value={this.state.interval}
+                  onChange={this.handleIntervalChange}
+                />{' '}
+              </div>
+            </div>
           </div>
         </div>
       </section>
