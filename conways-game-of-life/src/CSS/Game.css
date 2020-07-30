@@ -24,4 +24,15 @@
 
 .buttons {
   margin-left: 0.5%;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.inputButtons {
+  margin-left: 5%;
+}
+
+.Input {
+  margin-top: 2%;
 }

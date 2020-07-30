@@ -256,7 +256,7 @@ class Game extends React.Component {
           </div>
           <div
             class='btn-group'
-            className='bottom-buttons'
+            className='inputButtons'
             role='group'
             aria-label='Basic example'>
             <div class='buttons'>
@@ -287,13 +287,13 @@ class Game extends React.Component {
                 onClick={this.handleClear}>
                 Clear
               </button>
-              <div class='Input'>
-                Enter millisecond{' '}
-                <input
-                  value={this.state.interval}
-                  onChange={this.handleIntervalChange}
-                />{' '}
-              </div>
+            </div>
+            <div class='Input'>
+              Enter millisecond{' '}
+              <input
+                value={this.state.interval}
+                onChange={this.handleIntervalChange}
+              />{' '}
             </div>
           </div>
         </div>
